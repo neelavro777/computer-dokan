@@ -44,3 +44,11 @@
     width: 60%;
   }
 }
+
+
+
+
+.custom-btn {
+  width: 50%; /* Increase button width to fill the container */
+  border-radius: 50px; /* Make the button rounder */
+}
