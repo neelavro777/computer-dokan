@@ -2,44 +2,111 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [userType, setUserType] = useState("");
 
   const handleSignUp = async () => {
     try {
+      console.log(fullName, email, password, phoneNumber, userType);
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
         {
-          username,
+          fullName,
+          email,
           password,
+          phoneNumber,
+          userType,
         }
       );
       console.log(response.data.message);
     } catch (error) {
-      console.error("Registration failed:", error.response.data.error);
+      console.error("Registration failed:", error.response.data);
     }
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
-      <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+    <div className="container-fluid bg-dark text-white vh-100">
+      <div className="row bg-light border" style={{ height: "10%" }}>
+        <h2 className="text-black py-3 px-2">Computer Dokan</h2>
       </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <div className="row" style={{ height: "90%" }}>
+        <div className="bg-secondary d-flex align-items-center justify-content-center col-12 col-lg-6">
+          <div className="container w-75 bg-light rounded rounded-3 p-5">
+            <h2 className="text-black text-center">Sign Up</h2>
+            <form onSubmit={handleSignUp}>
+              <div className="form-group my-3">
+                <label htmlFor="fullName" className="text-black py-2 ps-2">
+                  Full Name
+                </label>
+                <input
+                  className="form-control"
+                  id="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </div>
+              <div className="form-group my-3">
+                <label htmlFor="email" className="text-black py-2 ps-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="form-group my-3">
+                <label htmlFor="password" className="text-black py-2 ps-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="form-group my-3">
+                <label htmlFor="Phone Number" className="text-black py-2 ps-2">
+                  Phone Number
+                </label>
+                <input
+                  className="form-control"
+                  id="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+              <div className="form-group my-3">
+                <label htmlFor="userType" className="text-black py-2 ps-2">
+                  User Type
+                </label>
+                <select
+                  id="userType"
+                  className="form-control"
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value)}
+                >
+                  <option value="">Select User Type</option>
+                  <option value="customer">Customer</option>
+                  <option value="seller">Seller</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <button type="submit" className="btn btn-dark mt-3 px-4 py-2">
+                Login
+              </button>
+            </form>
+          </div>
+        </div>
+        <div className="bg-light d-flex align-items-center col-12 col-lg-6"></div>
       </div>
-      <button onClick={handleSignUp}>Sign Up</button>
     </div>
   );
 };
