@@ -100,7 +100,7 @@ const SignUp = () => {
                 </select>
               </div>
               <button type="submit" className="btn btn-dark mt-3 px-4 py-2">
-                Login
+                Sign Up
               </button>
             </form>
           </div>

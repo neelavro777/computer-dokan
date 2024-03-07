@@ -3,7 +3,7 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
-
+import ForgotPassword from "./pages/ForgotPasswordPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignUp />,
   },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
+  }
 ]);
 
 function App() {
