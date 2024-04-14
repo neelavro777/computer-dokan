@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../globals.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [verificationMessage, setVerificationMessage] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,9 +20,39 @@ const Login = () => {
           password,
         }
       );
+      const { accessToken  } = response.data;
+      const { userType } = response.data;
+      const { userName } = response.data;
+      const { userId} = response.data;
+
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("userType", userType);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("userId", userId);
+
+      navigate("/");
       console.log(response.data);
     } catch (error) {
       console.error("Login failed:", error);
+      if (error.response.data.message === "User not verified"){
+        setVerificationMessage(
+          "Email not verified. Please check your email for the verification link."
+          );
+      }
+    }
+  };
+
+  const handleResendVerification = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/resend-verification",
+        {
+          email,
+        }
+      );
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Resend verification failed:", error);
     }
   };
 
@@ -57,8 +91,20 @@ const Login = () => {
               />
             </div>
             <p className="forgot-password text-right d-flex justify-content-end">
-              <a href="/forgotpassword">Forget Password</a>
+            <a href="/forgotpassword">Forget Password</a>
             </p>
+            {verificationMessage && (
+              <div className="alert alert-danger" role="alert">
+                {verificationMessage}
+                <button
+                  type="button"
+                  className="btn btn-link"
+                  onClick={handleResendVerification}
+                >
+                  Resend verification
+                </button>
+              </div>
+            )}
             <button type="submit" className="btn btn-dark mt-3 px-4 py-2">
               Login
             </button>

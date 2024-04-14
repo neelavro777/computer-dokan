@@ -17,6 +17,7 @@ const LoginPage = () => {
           password,
         }
       );
+
       console.log(response.data.message);
     } catch (error) {
       console.error("Registration failed:", error.response.data.error);

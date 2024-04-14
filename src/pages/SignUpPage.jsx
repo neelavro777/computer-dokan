@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+// import { set } from "mongoose";
 
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
@@ -7,8 +8,10 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userType, setUserType] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (event) => {
+    event.preventDefault();
     try {
       console.log(fullName, email, password, phoneNumber, userType);
       const response = await axios.post(
@@ -21,6 +24,7 @@ const SignUp = () => {
           userType,
         }
       );
+      setShowConfirmation(true);
       console.log(response.data.message);
     } catch (error) {
       console.error("Registration failed:", error.response.data);
@@ -33,6 +37,17 @@ const SignUp = () => {
         <h2 className="text-black py-3 px-2">Computer Dokan</h2>
       </div>
       <div className="row" style={{ height: "90%" }}>
+        {showConfirmation ? (
+          <div className="bg-secondary d-flex align-items-center justify-content-center col-12 col-lg-6">
+            <div className="container w-75 bg-light rounded rounded-3 p-5">
+              <h2 className="text-black text-center">Confirmation</h2>
+              <p className="text-black text-center">
+                You have successfully registered. Please check your email for
+                verification.
+              </p>
+            </div>
+          </div>
+        ) : (
         <div className="bg-secondary d-flex align-items-center justify-content-center col-12 col-lg-6">
           <div className="container w-75 bg-light rounded rounded-3 p-5">
             <h2 className="text-black text-center">Sign Up</h2>
@@ -105,6 +120,7 @@ const SignUp = () => {
             </form>
           </div>
         </div>
+        )}
         <div className="bg-light d-flex align-items-center col-12 col-lg-6"></div>
       </div>
     </div>
