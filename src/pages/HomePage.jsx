@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Listing from "../components/Listing";
-
+import { useAuthContext } from "../context/AuthContext"; // adjust the path according to your project structure
+import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [isLoggedin, setIsLogged] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userType, setUserType] = useState("");
-  const [userId, setUserId] = useState("");
-
+  const { authUser, setAuthUser } = useAuthContext();
+  
   const handleLoginClick = () => {
     navigate("/login");
   };
@@ -22,74 +21,64 @@ const HomePage = () => {
     navigate("/seller");
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    console.log(token);
-    if (token) {
-      setIsLogged(true);
-      setUserId(localStorage.getItem("userId"));
-      setUserName(localStorage.getItem("userName"));
-      setUserType(localStorage.getItem("userType"));
-    }
-  }, []);
-
+  const handleLogout = () => {
+    localStorage.removeItem("userinfo");
+    setAuthUser(null);
+  };
 
   return (
+    <div><Navbar />
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
-        <h1>HomePage </h1>
-        {isLoggedin ? (
+        <h1>HomePage</h1>
+        {authUser ? (
           <div>
-            {userType === 'admin' && (
+            <Link to="/chat" className="btn btn-primary mr-2">
+              Chat
+            </Link>
+            {authUser.userType === 'admin' && (
               <button
                 type="button"
                 className="btn btn-primary mr-2"
                 onClick={handleAdminClick}
               >
-                Admin Panel 
+                Admin
               </button>
             )}
-            {userType === 'seller' && (
+            {authUser.userType === 'seller' && (
               <button
                 type="button"
                 className="btn btn-primary mr-2"
                 onClick={handleSellerClick}
               >
-                Seller Panel
+                Seller
               </button>
             )}
             <button
               type="button"
               className="btn btn-danger"
-              onClick={() => {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("userType");
-                localStorage.removeItem("userName");
-                setIsLogged(false);
-              }}
+              onClick={handleLogout}
             >
               Logout
             </button>
           </div>
         ) : (
-          <Link to="/login">
-            <button
-              type="button"
-              className="btn btn-primary"
-              // onClick={handleLoginClick}
-            >
-              Login
-            </button>
-          </Link>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleLoginClick}
+          >
+            Login
+          </button>
         )}
       </div>
-      {isLoggedin ? (
-        <h2>Welcome, {userName} </h2>
+      {authUser ? (
+        <h2>Welcome, {authUser.userName}</h2>
       ) : (
         <h2>You are not logged in</h2>
       )}
       <Listing />
-    </div>
+    </div></div>
   );
 };
 

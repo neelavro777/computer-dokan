@@ -5,18 +5,25 @@ import ProductCard from "./ProductCard";
 import ImageUpload from "./ImageUpload";
 
 const Listing = () => {
+
+  // const [image, setImage] = useState(null);
   const [allItems, setAllItems] = useState(null);
+  // const [product, setProduct] = useState("");
+  // const [category, setCategory] = useState("");
+  // const [price, setPrice] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getItem();
   }, []);
 
+
   const getItem = async () => {
-    const result = await axios.get("http://localhost:5000/api/auth/get-item");
+    const result = await axios.get("http://localhost:5000/api/product/get-item");
     console.log(result);
     setAllItems(result.data);
   };
+
 
   return (
     <div>
@@ -29,17 +36,18 @@ const Listing = () => {
       />
       <div className="row">
         {allItems === null
-          ? ""
-          : allItems
-              .filter((items) => {
-                return searchTerm.toLowerCase() === ""
-                  ? items
-                  : items.product.toLowerCase().includes(searchTerm);
+            ? ""
+            : allItems.filter((item) => {
+                return searchTerm.toLowerCase()==="" ? item : item.product.toLowerCase().includes(searchTerm);
               })
-              .map((data, index) => <ProductCard key={index} data={data} />)}
+            .map((data) => (
+              <ProductCard key={data.id} data={data} />
+            ))}
       </div>
+
     </div>
   );
+  
 };
 
 export default Listing;

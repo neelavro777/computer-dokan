@@ -9,7 +9,14 @@ import VerifyUser from "./pages/VerifyUserPage";
 import AdminPage from "./pages/AdminPage";
 import SellerPage from "./pages/SellerPage";
 import ProductPage from "./pages/ProductPage";
+import ChatPage from "./pages/ChatPage";
+import CompareProductPage from "./pages/CompareProductPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import CartPage from "./pages/CartPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import PCbuilderPage from "./pages/PCbuilderPage";
+import CategoryPage from "./pages/CategoryPage";
+import PaymentFailurePage from "./pages/PaymentFailurePage";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -46,9 +53,38 @@ const router = createBrowserRouter([
     element: <SellerPage />,
   },
   {
-    path: "/view-product/:id",
+    path: "/product/:id",
     element: <ProductPage />,
   },
+  {
+    path: "/chat",
+    element: <ChatPage />,
+  },
+  {
+      path: "/cart",
+      element: <CartPage />,
+  },
+  {
+      path: "/payment/success/:transactionId",
+      element: <PaymentSuccessPage />,
+  },
+  {
+      path: "/payment/fail/:transactionId",
+      element: <PaymentFailurePage />,
+  },
+  {
+      path: "/compare",
+      element: <CompareProductPage />,
+  },
+  {
+      path: "/pc-builder",
+      element: <PCbuilderPage />,
+  },
+  {
+      path: "/category/:category",
+      element: <CategoryPage />,
+  },
+  
 ]);
 
 function App() {

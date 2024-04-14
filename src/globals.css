@@ -52,3 +52,15 @@
   width: 50%; /* Increase button width to fill the container */
   border-radius: 50px; /* Make the button rounder */
 }
+
+@media screen and (max-width: 768px) {
+  .img-fluid {
+    max-width: 50%;
+  }
+}
+
+/* styles.css */
+.custom-close .btn-close svg {
+  fill: white;
+}
+

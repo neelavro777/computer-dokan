@@ -12,12 +12,12 @@ const AdminPage = () => {
     }, []);
   
     const getImages = async () => {
-      const result = await axios.get("http://localhost:5000/api/auth/get-item");
+      const result = await axios.get("http://localhost:5000/api/product/get-item");
       setImages(result.data);
     };
   
     const onDelete = async (id) => {
-      await axios.delete(`http://localhost:5000/api/auth/delete-item/${id}`);
+      await axios.delete(`http://localhost:5000/api/product/delete-item/${id}`);
       getImages();
     };
   
