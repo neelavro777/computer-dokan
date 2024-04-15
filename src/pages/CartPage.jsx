@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext';
 import { AiOutlineClose } from "react-icons/ai";
+import { toast } from 'react-toastify';
 
 const CartPage = () => {
   const { cartItems,setCartItems,setCartCount, removeFromCart } = useCart();
@@ -34,6 +35,22 @@ const CartPage = () => {
   };
 
   const handleCheckout = () => {
+    let outOfStockProducts = [];
+
+    for (let i = 0; i < cartItems.length; i++) {
+      if (cartItems[i].stock < cartItems[i].quantity) {
+        outOfStockProducts.push({
+          name: cartItems[i].product,
+          stock: cartItems[i].stock
+        });
+      }
+    }
+    
+    if (outOfStockProducts.length > 0) {
+      toast.error('The following products are out of stock: ' + outOfStockProducts.map(p => `${p.name} (stock: ${p.stock})`).join(', '));
+      return;
+    }
+
     if (userId && username) {
       const data = {
         userId: userId,
