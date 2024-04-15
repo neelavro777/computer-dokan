@@ -7,7 +7,7 @@ import MessengerShare from './MessengerShare';
 import useMakeOffer from '../hooks/useMakeOffer';
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
-
+import StarRatings from 'react-star-ratings';
 
 
 const ProductPageDashboard = ({ productID, product }) => {
@@ -23,16 +23,21 @@ const ProductPageDashboard = ({ productID, product }) => {
   const protag = `https://12d8-103-184-94-140.ngrok-free.app/product/${productID}`
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         const [reviewResponse] = await Promise.all([
           axios.get(`http://localhost:5000/api/product/get-review/${productID}`)
         ]);
-
+        if (reviewResponse.data.length === 0) {
+          setAverageReview(0);
+        } else {
         const totalRating = reviewResponse.data.reduce((total, review) => total + review.rating, 0);
         const avgRating = totalRating / reviewResponse.data.length;
         setAverageReview(avgRating);
+        }
+
       } catch (error) {
         console.error('Failed to fetch product data:', error);
       }
@@ -76,7 +81,15 @@ const ProductPageDashboard = ({ productID, product }) => {
                 <h5 className="card-title flex-grow-1">Card title</h5>
               </div>
               <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p className="card-text"><small className="text-body-secondary">Average Review: {averageReview}</small></p>
+              <p className="card-text"><small className="text-body-secondary">
+              <StarRatings
+                  rating={averageReview}
+                  starRatedColor="gold"
+                  numberOfStars={5}
+                  starDimension="20px"
+                  starSpacing="2px"
+              />
+              </small></p>
               <div className="d-flex align-items-center">
                     <button className="btn btn-outline-primary btn-sm me-2" onClick={decreaseQuantity}>-</button>
                     <span className="me-2">Quantity: {quantity}</span>
