@@ -30,13 +30,14 @@ const ChatPage = () => {
           <div className="col-md-6 p-0">
             <MessageContainer />
           </div>
-          <div className="col-md-3">
-            <div className="pt-4 mb-4 border-bottom">
+          <div className="col-md-3 bg-light h-100">
+            <div className="pt-4 " style={{ height: "10%" }}>
               <p className="ps-2 fs-5 fw-semibold">Offer History</p>
             </div>
-
-            <PendingOffers />
-            {newOffer && <SendOffer product={newOffer} />}
+            <div className=" overflow-auto" style={{ height: "90%" }}>
+              <PendingOffers />
+              {newOffer && <SendOffer product={newOffer} />}
+            </div>
           </div>
         </div>
       </div>
