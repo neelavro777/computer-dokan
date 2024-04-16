@@ -83,10 +83,11 @@ const ProductPageDashboard = ({ productID, product }) => {
                     <button className="btn btn-outline-primary btn-sm" onClick={increaseQuantity}>+</button>
                 </div>              
               <FaceBookShare  url={protag} quote={product.product}/>
-                {product.uploadedBy?.userType === 'seller' ? (
+                {product.uploadedBy?.userType === 'seller' && authUser?.userType === 'customer' ? (
                   <div className="text-end">
                     <p className="card-text">Price: {product.price}</p>
-                    <button className="btn btn-dark">Add to Cart</button>
+                    {/* <button className="btn btn-dark">Add to Cart</button> */}
+                    <button className="btn btn-dark" onClick={handleAddToCart}>Add to Cart</button>
                     <button className="btn btn-dark" onClick={() => setShowOfferInput(!showOfferInput)}>Make Offer to Seller</button>
                     {showOfferInput &&  (
                     <div>
@@ -96,7 +97,7 @@ const ProductPageDashboard = ({ productID, product }) => {
                             navigate('/chat');
                           }}>Submit Offer
                       </button>
-                      <button className="btn btn-primary mt-2" onClick={handleAddToCart}>Add to Cart</button>
+                      {/* <button className="btn btn-primary mt-2" onClick={handleAddToCart}>Add to Cart</button> */}
                       <div>                      
                       {status === 'loading' && <p>Loading...</p>}
                       {status === 'error' && <p>Error: {error.message}</p>}

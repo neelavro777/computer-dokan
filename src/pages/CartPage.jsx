@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext';
 import { AiOutlineClose } from "react-icons/ai";
+import { useChatContext } from '../context/ChatContext';
 
 const CartPage = () => {
   const { cartItems,setCartItems,setCartCount, removeFromCart } = useCart();
   const [userId, setUserId] = useState('');
   const [username, setUsername] = useState('');
   const [redirectToLogin, setRedirectToLogin] = useState(false); 
-
+  const { setIsAddedToCart, isAddedToCart } = useChatContext();
 
   useEffect(() => {
     const originalBackgroundColor = document.body.style.backgroundColor;
@@ -31,6 +32,7 @@ const CartPage = () => {
 
   const handleRemove = (product) => {
     removeFromCart(product);
+    setIsAddedToCart(false);
   };
 
   const handleCheckout = () => {
@@ -83,7 +85,7 @@ const CartPage = () => {
   };
 
   
-
+  console.log(isAddedToCart)
   return (
     <div>
       <Navbar />

@@ -11,8 +11,8 @@ import { useProductContext } from '../../context/ProductContext';
 
 
 const Messages = () => {
-  const { selectedUser, chats, setChats } = useChatContext();
-  const {  setOffers } = useProductContext();
+  const { selectedUser, chats, setChats, reloadMessages, setReloadMessages} = useChatContext();
+  const {  setOffers, offerStatus, setOfferStatus } = useProductContext();
   console.log(selectedUser)
   const { socket } = useSocketContext();
 
@@ -24,6 +24,14 @@ const Messages = () => {
       return () => socket.off("newMessage");
     }, [socket, chats, setChats]);
 
+    useEffect(() => {
+      socket.on('offerStatusChanged', () => {
+        setReloadMessages(true);
+        setOfferStatus(true);
+      });
+      return () => socket.off('offerStatusChanged');
+    }, [socket, setReloadMessages, setOfferStatus]);
+
     // useEffect(() => {
     //   socket.on("deleteMessage", (messageId) => {
     //     console.log('Received deleteMessage event for message:', messageId);        
@@ -32,33 +40,62 @@ const Messages = () => {
     //   return () => socket.off("deleteMessage");
     // }, [socket, chats, setChats]);
 
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/message/${selectedUser._id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
+  // useEffect(() => {
+  //   const getMessages = async () => {
+  //     try {
+  //       const res = await axios.get(`http://localhost:5000/api/message/${selectedUser._id}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //         },
+  //       });
 
-        const data = await res.data;
-        if (Array.isArray(data) && data.length > 0) {
-          console.log(data)
-          setChats(data);
-        } else {
-          setChats([]);
-        }
-      } catch (error) {
-        console.error(error);
+  //       const data = await res.data;
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         console.log(data)
+  //         setChats(data);
+  //       } else {
+  //         setChats([]);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //       setChats([]);
+  //     }
+  //   };
+  //   // console.log(chats)
+  //   // console.log(selectedUser?._id)
+  //   if(selectedUser?._id) getMessages();
+  // }
+  // , [selectedUser, setChats]);
+
+  const getMessages = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/message/${selectedUser._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+  
+      const data = await res.data;
+      if (Array.isArray(data) && data.length > 0) {
+        console.log(data)
+        setChats(data);
+      } else {
         setChats([]);
       }
-    };
-    // console.log(chats)
-    // console.log(selectedUser?._id)
-    if(selectedUser?._id) getMessages();
-  }
-  , [selectedUser, setChats]);
+    } catch (error) {
+      console.error(error);
+      setChats([]);
+    }
+    // Set reloadMessages back to false
+    setReloadMessages(false);
+  };
+
+  useEffect(() => {
+    getMessages();
+  }, [selectedUser, reloadMessages, setChats]); // Add reloadMessages as a dependency
+
   console.log(chats)
+
   return (
     <div className='px-4 flex-grow-1 overflow-auto d-flex flex-column'>
       {/* {chats.map((chat) => (

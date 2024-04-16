@@ -5,21 +5,23 @@ import { useProductContext } from '../../context/ProductContext';
 import useMakeOffer from '../../hooks/useMakeOffer';
 
 
-const SendOffer = () => {
+
+const SendOffer = ({ product }) => {
   const { authUser } = useAuthContext();
   const { selectedUser } = useChatContext();
-  const { selectedProduct, selectedOffer } = useProductContext();
+  const { selectedProduct, selectedOffer, setNewOffer } = useProductContext();
   const [offerAmount, setOfferAmount] = useState('');
   // console.log(selectedUser);
 
-  const { status, offerData, messageData, error, makeOffer } = useMakeOffer(selectedProduct?._id, offerAmount, selectedUser?._id);
+  const { status, offerData, messageData, error, makeOffer } = useMakeOffer(product?._id, offerAmount, selectedUser?._id);
   const handleSendOffer = async () => {
     await makeOffer();
     setOfferAmount('');
+    setNewOffer(null);
     // console.log(messageData, offerData);
   };
 
-  console.log("selectedOffer",selectedOffer)
+  // console.log("selectedOffer",selectedOffer)
 
     return (
         <div className="card" style={{ width: '18rem', height: 'auto', marginBottom: '1rem' }}>
@@ -32,7 +34,8 @@ const SendOffer = () => {
               className="form-control mb-2" 
               placeholder="Enter your offer"
             />
-            <button onClick={handleSendOffer} className="btn btn-primary" disabled={!selectedProduct || selectedOffer?.offerStatus ==='declined' || selectedOffer?.offerStatus ==='accepted'}>Send Offer</button>
+            {/* <button onClick={handleSendOffer} className="btn btn-primary" disabled={!selectedProduct || selectedOffer?.offerStatus ==='declined' || selectedOffer?.offerStatus ==='accepted'}>Send Offer</button> */}
+            <button onClick={handleSendOffer} className="btn btn-primary" disabled={offerAmount <= 0}>Send Offer</button>
             {status === 'loading' && <p>Loading...</p>}
             {status === 'error' && <p>Error: {error.message}</p>}
             {status === 'success' && <p>Offer sent successfully!</p>}
