@@ -8,58 +8,98 @@ import { useSocketContext } from '../../context/SocketContext';
 const PendingOffers = () => {
   // const [offers, setOffers] = useState([]);
   const { selectedUser } = useChatContext();
-  const { selectedProduct, setSelectedProduct, setOffers, offers, setSelectedOffer, selectedOffer } = useProductContext();
+  const { selectedProduct, setSelectedProduct, setOffers, offers, setSelectedOffer, selectedOffer, offerStatus, setOfferStatus } = useProductContext();
 
   const { socket } = useSocketContext();
 
-  useEffect(() => {
-    if (socket){    
-      socket.on("newOffer", (newOffer) => {
-      setOffers([...offers, newOffer]);
-    });
-    return () => socket.off("newOffer");}
+  // useEffect(() => {
+  //   if (socket){    
+  //     socket.on("newOffer", (newOffer) => {
+  //     setOffers([...offers, newOffer]);
+  //   });
+  //   return () => socket.off("newOffer");}
 
-  }, [socket, offers, setOffers]);
+  // }, [socket, setOffers, offers]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("newOffer", (newOffer) => {
+        setOffers((prevOffers) => [...prevOffers, newOffer]);
+      });
+  
+      return () => socket.off("newOffer");
+    }
+  }, [socket, setOffers]);
 
 
   const handleClick = (offer, index) => {
-    setSelectedProduct(offer.product);
-    setSelectedOffer(offer);
+    // setSelectedProduct(offer.product);
+    // setSelectedOffer(offer);
+    console.log(offer);
   }
 
 
 
-  useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/offer/get-offers/${selectedUser._id}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-        });
-        const data = await response.data;
-        // setOffers();
-        if (Array.isArray(data) && data.length > 0) {
-          console.log(data)
-          setOffers(data);
-        } else {
-          setOffers([]);
-        }
-        // setOffers(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchOffers = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:5000/api/offer/get-offers/${selectedUser._id}`, {
+  //           headers: {
+  //               Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //           },
+  //       });
+  //       const data = await response.data;
+  //       // setOffers();
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         console.log(data)
+  //         setOffers(data);
+  //       } else {
+  //         setOffers([]);
+  //       }
+  //       // setOffers(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
+  //   if (selectedUser?._id) {
+  //     fetchOffers();
+  //   }
+  // }, [selectedUser, setOffers]);
+  
+  const fetchOffers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/offer/get-offers/${selectedUser._id}`, {
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+      });
+      const data = await response.data;
+      // setOffers();
+      if (Array.isArray(data) && data.length > 0) {
+        console.log(data)
+        setOffers(data);
+      } else {
+        setOffers([]);
+      }
+      // setOffers(data);
+    } catch (error) {
+      console.error(error);
+    }
+    setOfferStatus(false)
+  };
+
+  useEffect(() => {
     if (selectedUser?._id) {
       fetchOffers();
     }
-  }, [selectedUser, setOffers]);
+  }, [selectedUser, setOffers, offerStatus]);
+
   console.log(offers);
 
   return (
     <div className="d-flex flex-column gap-2"> 
-      {offers && offers.map((offer, index) => (
+      {selectedUser && offers && offers.map((offer, index) => (
         <div 
           key={index}
           className={`d-flex gap-2 align-items-center rounded p-2 py-1 ${selectedOffer === offer ? (offer.offerStatus === 'declined' ? 'bg-danger' : offer.offerStatus === 'accepted' ? 'bg-success' : offer.offerStatus === 'pending' ? 'bg-info' : '') : 'bg-light'}`}

@@ -34,7 +34,7 @@ const useMakeOffer = (productID, offeredAmount, receiverId) => {
             // console.log(newMessage);
             console.log(responseData.data);
             setChats([...chats, responseData.data.newMessage]);
-            setOffers([...offers, responseData.data.newOffer]);
+            // setOffers([...offers, responseData.data.newOffer]);
             setMessageData(responseData.data.newMessage);
             setOfferData(responseData.data.newOffer);
             setStatus('success');

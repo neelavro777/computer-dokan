@@ -10,8 +10,10 @@ export const ProductContextProvider = ({ children }) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [offers, setOffers] = useState([]);
     const [selectedOffer, setSelectedOffer] = useState(null);
+    const [offerStatus, setOfferStatus] = useState(false);
+    const [newOffer, setNewOffer] = useState(null);
     return (
-      <ProductContext.Provider value={{ productPrice, setproductPrice, product, setProduct, selectedProduct, setSelectedProduct, setOffers, offers, setSelectedOffer, selectedOffer}}>
+      <ProductContext.Provider value={{ productPrice, setproductPrice, product, setProduct, selectedProduct, setSelectedProduct, setOffers, offers, setSelectedOffer, selectedOffer, offerStatus, setOfferStatus, newOffer, setNewOffer}}>
         {children}
       </ProductContext.Provider>
     );

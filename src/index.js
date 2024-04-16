@@ -16,18 +16,18 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <ChatContextProvider>
         <ProductContextProvider>
           <CompatibilityProvider>
-            <CartProvider>
-              <SocketContextProvider>
-                <App />
-                <ToastContainer />
-              </SocketContextProvider> 
-            </CartProvider>
+              <ChatContextProvider>
+                <CartProvider>
+                  <SocketContextProvider>
+                      <App />
+                      <ToastContainer />
+                    </SocketContextProvider> 
+                  </CartProvider>
+              </ChatContextProvider>
           </CompatibilityProvider>
         </ProductContextProvider>  
-      </ChatContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );
