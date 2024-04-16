@@ -78,8 +78,9 @@ function Navbar() {
         <div className="d-flex flex-column flex-wrap"style={{ paddingBottom: '120px',width:'100%' }}>
             {/* Map through cartItems to render cart content */}
             {cartItems.map((item, index) => (
+              <div>
               <Card key={index} className="mb-3 position-relative" style={{ width: '100%', 
-                transition: "box-shadow 0.3s ease", overflow: "hidden",}}
+                transition: "box-shadow 0.3s ease", overflow: "hidden", border: "none"}}
             onMouseOver={(e) => {
             e.currentTarget.style.boxShadow = "0px 0px 15px 5px rgba(0,0,0,0.1)";
             e.currentTarget.querySelector('.card-img-top').style.transform = "scale(1.1)"}}
@@ -108,6 +109,8 @@ function Navbar() {
                   </div>
                 </Link>
               </Card>
+              <hr style={{ width: '100%', margin: '5px 0' }} />
+              </div>
             ))}
           </div>
           <div style={{ position: "absolute", bottom: "50px", left: "0", right: "0", backgroundColor: "rgb(242,242,242)", color: "black", padding: "10px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
