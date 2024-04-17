@@ -60,7 +60,7 @@ const RejectedMessage = ({ chat }) => {
               <div>
                 <p className="fs-5 fw-semibold py-1">
                   {" "}
-                  Your Offer was rejected Make a new Offer?{" "}
+                   Offer was rejected Make a new Offer?{" "}
                 </p>
                 <p>Price: {chat.offer.product.price}</p>
                 <p>Previous Offer: {chat.offer.offerAmount}</p>

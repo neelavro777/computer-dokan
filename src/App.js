@@ -17,6 +17,7 @@ import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PCbuilderPage from "./pages/PCbuilderPage";
 import CategoryPage from "./pages/CategoryPage";
 import PaymentFailurePage from "./pages/PaymentFailurePage";
+import CustomerPage from "./pages/CustomerPage";
 import "./index.css";
 import ProfilePage from "./pages/ProfilePage";
 import SearchPage from "./pages/SearchPage";
@@ -94,6 +95,14 @@ const router = createBrowserRouter([
     path: "/category/:category",
     element: <CategoryPage />,
   },
+<<<<<<< Updated upstream
+=======
+  {
+      path: "/customer",
+      element: <CustomerPage />,
+  },
+  
+>>>>>>> Stashed changes
 ]);
 
 function App() {
