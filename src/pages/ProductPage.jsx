@@ -6,6 +6,7 @@ import ReviewDisplay from '../components/ReviewDisplay';
 import ProductPageDashboard from '../components/ProductPageDashboard';
 import SpecificationTable from '../components/SpecificationTable';  
 import Navbar from '../components/Navbar'; 
+import ReactPlayer from 'react-player';
 
 
 const ProductPage = () => {
@@ -15,6 +16,18 @@ const ProductPage = () => {
     const [activeTab, setActiveTab] = useState('active');
     const [product, setProduct] = useState('');
     const [showReviewForm, setShowReviewForm] = useState(false);
+    const [showVideo, setShowVideo] = useState(false);
+    const videoLinks = {
+        "Graphics Card": "https://youtu.be/7fz3p7Wt0FQ?si=QhodKhMfISK5zrMw",
+        "Motherboard": "https://youtu.be/Ce4xTcKe5bs?si=kATffWAJ9cVsYHN2",
+        "RAM": "https://youtu.be/kRMJwiXhrEU?si=Ybeb1lhq1E70o0Za",
+        "Power Supply": "https://youtu.be/gdPnsuo8AVw?si=P7AmkX-dQlvq6rn0",
+        "Processor": "https://youtu.be/6t8YhRTqLfA?si=_cCicwPBxspkclPn"
+    };
+    const handleTabClick = (tabName) => {
+        setActiveTab(tabName);
+        setShowVideo(false); // Close the video tab if another tab is clicked
+    };
  
     
     useEffect(() => {
@@ -71,12 +84,14 @@ const ProductPage = () => {
                     </button>
                     <button
                         type="button"
-                        className={`btn btn-default ${activeTab === 'disabled' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('disabled')}
-                        disabled
+                        className={`btn btn-${activeTab==='video'?'dark':'default'} ${activeTab === 'video' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('video')}
+                        onMouseOver={(e) => activeTab === 'video' ? e.target.style.backgroundColor = '' : e.target.style.backgroundColor = '#343a40'}
+                        onMouseOut={(e) => activeTab === 'video' ? e.target.style.backgroundColor = '' : e.target.style.backgroundColor = 'white'}
                     >
-                        Disabled
+                        Video
                     </button>
+                    
                 </div>
                 {activeTab === 'link'?
                 <div className='py-3 '>  
@@ -90,6 +105,12 @@ const ProductPage = () => {
                 <div className='border rounded '>
 
                 <SpecificationTable specifications={product.specifications}/>
+                </div>}
+                {activeTab === 'video' &&
+                <div className="d-flex justify-content-center py-7">
+                <div className=' '>
+                    <ReactPlayer url={videoLinks[product.category]} controls={true}/>
+                </div>
                 </div>}
             </div>
         </div>
