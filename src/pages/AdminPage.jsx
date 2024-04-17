@@ -6,6 +6,7 @@ import Dashboard from "../components/admin/Dashboard";
 import Product from "../components/admin/Product";
 import User from "../components/admin/User";
 import AdminAddProduct from "../components/admin/AdminAddProduct";
+import AdminAddUser from "../components/admin/AdminAddUser";
 
 const AdminPage = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
@@ -50,6 +51,14 @@ const AdminPage = () => {
               >
                 Add Product
               </li>
+              <li
+                className={`btn nav-item nav-pills ${
+                  currentTab === "addUser" ? "btn-dark" : ""
+                }`}
+                onClick={() => setCurrentTab("addUser")}
+              >
+                Add User
+              </li>
             </ul>
           </div>
 
@@ -59,6 +68,7 @@ const AdminPage = () => {
             {currentTab == "user" ? <User /> : null}
             {currentTab == "product" ? <Product /> : null}
             {currentTab == "addProduct" ? <AdminAddProduct /> : null}
+            {currentTab == "addUser" ? <AdminAddUser /> : null}
           </div>
         </div>
       </div>
