@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
-import Navbar from '../components/Navbar';
-import { useCart } from '../context/CartContext';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { useCart } from "../context/CartContext";
 import { AiOutlineClose } from "react-icons/ai";
-import { useChatContext } from '../context/ChatContext';
-import { toast } from 'react-toastify';
-
+import { useChatContext } from "../context/ChatContext";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
-  const { cartItems,setCartItems,setCartCount, removeFromCart } = useCart();
-  const [userId, setUserId] = useState('');
-  const [username, setUsername] = useState('');
-  const [redirectToLogin, setRedirectToLogin] = useState(false); 
+  const { cartItems, setCartItems, setCartCount, removeFromCart } = useCart();
+  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState("");
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const { setIsAddedToCart, isAddedToCart } = useChatContext();
 
   useEffect(() => {
     const originalBackgroundColor = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = 'rgb(242, 242,242)';
+    document.body.style.backgroundColor = "rgb(242, 242,242)";
     console.log(cartItems);
-    
+
     const token = localStorage.getItem("accessToken");
     if (token) {
       setUserId(localStorage.getItem("userId"));
@@ -26,7 +25,7 @@ const CartPage = () => {
     } else {
       setRedirectToLogin(true);
     }
-    
+
     return () => {
       document.body.style.backgroundColor = originalBackgroundColor;
     };
@@ -34,7 +33,9 @@ const CartPage = () => {
 
   const handleRemove = (product) => {
     removeFromCart(product);
-    setIsAddedToCart(false);
+    if (isAddedToCart === product._id) {
+      setIsAddedToCart(null);
+    }
   };
 
   const handleCheckout = () => {
@@ -44,13 +45,18 @@ const CartPage = () => {
       if (cartItems[i].stock < cartItems[i].quantity) {
         outOfStockProducts.push({
           name: cartItems[i].product,
-          stock: cartItems[i].stock
+          stock: cartItems[i].stock,
         });
       }
     }
-    
+
     if (outOfStockProducts.length > 0) {
-      toast.error('The following products are out of stock: ' + outOfStockProducts.map(p => `${p.name} (stock: ${p.stock})`).join(', '));
+      toast.error(
+        "The following products are out of stock: " +
+          outOfStockProducts
+            .map((p) => `${p.name} (stock: ${p.stock})`)
+            .join(", ")
+      );
       return;
     }
 
@@ -58,41 +64,41 @@ const CartPage = () => {
       const data = {
         userId: userId,
         userName: username,
-        products: cartItems
+        products: cartItems,
       };
 
-      fetch('http://localhost:5000/api/payment/order', {
-        method: 'POST',
+      fetch("http://localhost:5000/api/payment/order", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       })
-      .then((res) => res.json())
-      .then((result) => {
-        window.location.replace(result.url);
-      });
+        .then((res) => res.json())
+        .then((result) => {
+          window.location.replace(result.url);
+        });
     } else {
       setRedirectToLogin(true);
     }
   };
 
   const increaseQuantity = (product) => {
-    const updatedCartItems = cartItems.map(item => {
+    const updatedCartItems = cartItems.map((item) => {
       if (item.id === product.id) {
         return { ...item, quantity: item.quantity + 1 };
       }
       return item;
     });
     setCartItems(updatedCartItems);
-    setCartCount(prevCount => prevCount + 1);
+    setCartCount((prevCount) => prevCount + 1);
     // Update cartItems state with the new array
   };
 
   const decreaseQuantity = (product) => {
-    const updatedCartItems = cartItems.map(item => {
+    const updatedCartItems = cartItems.map((item) => {
       if (item.id === product.id && item.quantity > 1) {
-        setCartCount(prevCount => prevCount - 1);
+        setCartCount((prevCount) => prevCount - 1);
         return { ...item, quantity: item.quantity - 1 };
       }
       return item;
@@ -102,8 +108,7 @@ const CartPage = () => {
     // Update cartItems state with the new array
   };
 
-  
-  console.log(isAddedToCart)
+  console.log(isAddedToCart);
   return (
     <div>
       <Navbar />
@@ -111,7 +116,7 @@ const CartPage = () => {
         <div className="mt-4">
           <table className="table border">
             <thead>
-              <tr className='table-dark'>
+              <tr className="table-dark">
                 <th>Image</th>
                 <th>Product</th>
                 <th>Category</th>
@@ -134,29 +139,58 @@ const CartPage = () => {
                     </Link>
                   </td>
                   <td>
-                    <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }} onMouseOver={(e)=>{e.target.style.textDecoration='underline'}} onMouseOut={(e)=>{e.target.style.textDecoration='none'}}>
+                    <Link
+                      to={`/product/${product.id}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                      onMouseOver={(e) => {
+                        e.target.style.textDecoration = "underline";
+                      }}
+                      onMouseOut={(e) => {
+                        e.target.style.textDecoration = "none";
+                      }}
+                    >
                       {product.product}
                     </Link>
                     <p>TK {product.price}</p>
                   </td>
                   <td>{product.category}</td>
-                  <td>Tk {product.price*product.quantity}</td>
+                  <td>Tk {product.price * product.quantity}</td>
                   <td>
                     <div className="input-group">
-                      <button className="btn btn-outline-secondary" type="button" onClick={() => decreaseQuantity(product)}>-</button>
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => decreaseQuantity(product)}
+                      >
+                        -
+                      </button>
                       <input
                         type="text"
                         className="form-control"
-                        style={{ width: "20px", textAlign: "center" }} 
+                        style={{ width: "20px", textAlign: "center" }}
                         value={product.quantity}
                         readOnly
                       />
-                      <button className="btn btn-outline-secondary" type="button" onClick={() => increaseQuantity(product)}>+</button>
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => increaseQuantity(product)}
+                      >
+                        +
+                      </button>
                     </div>
                   </td>
                   <td>
-                    <div onClick={() => handleRemove(product)} onMouseOver={(e) => { e.target.style.color = "red" }} onMouseOut={(e) => { e.target.style.color = "" }}>
-                      <AiOutlineClose size={30} style={{ cursor: 'pointer' }}/>
+                    <div
+                      onClick={() => handleRemove(product)}
+                      onMouseOver={(e) => {
+                        e.target.style.color = "red";
+                      }}
+                      onMouseOut={(e) => {
+                        e.target.style.color = "";
+                      }}
+                    >
+                      <AiOutlineClose size={30} style={{ cursor: "pointer" }} />
                     </div>
                   </td>
                 </tr>
@@ -165,9 +199,13 @@ const CartPage = () => {
           </table>
         </div>
         {redirectToLogin ? (
-          <Link to="/login" className="btn btn-primary">Login to Checkout</Link>
+          <Link to="/login" className="btn btn-primary">
+            Login to Checkout
+          </Link>
         ) : (
-          <button className="btn btn-dark" onClick={handleCheckout}>Checkout</button>
+          <button className="btn btn-dark" onClick={handleCheckout}>
+            Checkout
+          </button>
         )}
       </div>
     </div>

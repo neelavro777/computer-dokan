@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios"; // Ensure Axios is installed using npm or yarn
 import { useAuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
+import OrderHistory from "../components/OrderHistory";
 
 const ProfilePage = () => {
   const { authUser, setAuthUser } = useAuthContext();
@@ -124,6 +125,16 @@ const ProfilePage = () => {
             </form>
           </div>
         </div>
+
+        {authUser.userType === "customer" && (
+          <div className="row justify-content-center mt-5 pt-3">
+            <div className="col-md-10">
+              <p className="fs-3">Order History</p>
+              <hr className="mb-4" />
+              <OrderHistory />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
