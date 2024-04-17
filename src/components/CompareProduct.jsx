@@ -49,7 +49,7 @@ const CompareProduct = () => {
     <div className="d-flex justify-content-between py-3">
         {selectedProducts.map((product, index) => (
             <div key={index} className="border rounded p-3">
-                <h1 className='h4'>{product.product}</h1>
+                <h1 className='h4' style={{ wordWrap: 'break-word', maxWidth: '500px' }}>{product.product}</h1>
                 <SpecificationTable specifications={product.specifications}  />
                 <button className="btn btn-sm btn-danger mt-2" onClick={() => handleCloseButtonClick(index)}>Close</button>
             </div>
