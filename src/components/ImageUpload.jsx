@@ -89,94 +89,131 @@ const ImageUpload = ({ onUpload }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={onUploadItem}>
-        <div className="w-50">
+    <div className="container mt-3 px-5">
+      <p className="fs-3 fw-semibold">Add Product</p>
+      <hr />
+      <form onSubmit={onUploadItem} className="">
+        <div className="mb-3">
+          <label htmlFor="imageUpload" className="form-label">
+            Upload Image
+          </label>
           <input
+            className="form-control"
             type="file"
+            id="imageUpload"
             accept="image/*"
             onChange={onInputChange}
-            placeholder="Upload image"
           />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="productName" className="form-label">
+            Product
+          </label>
           <input
             className="form-control"
             type="text"
+            id="productName"
             placeholder="Product"
-            aria-label="Product"
             value={product}
             onChange={(e) => setProduct(e.target.value)}
           />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="categoryName" className="form-label">
+            Category
+          </label>
           <input
             className="form-control"
             type="text"
+            id="categoryName"
             placeholder="Category"
-            aria-label="Category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="productPrice" className="form-label">
+            Price
+          </label>
           <input
             className="form-control"
             type="text"
+            id="productPrice"
             placeholder="Price"
-            aria-label="Price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
+        </div>
 
-          {/* Render input fields for forms */}
-          {forms.map((form, formIndex) => (
-            <div key={formIndex}>
-              <input
-                type="text"
-                placeholder="Form Name"
-                value={form.name}
-                onChange={(e) => handleFormChange(formIndex, e.target.value)}
-              />
-              {/* Render input fields for inputs */}
-              {form.inputs.map((input, inputIndex) => (
-                <div key={inputIndex}>
-                  <input
-                    type="text"
-                    placeholder="Key"
-                    value={input.key}
-                    onChange={(e) =>
-                      handleInputChange(
-                        formIndex,
-                        inputIndex,
-                        "key",
-                        e.target.value
-                      )
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="Value"
-                    value={input.value}
-                    onChange={(e) =>
-                      handleInputChange(
-                        formIndex,
-                        inputIndex,
-                        "value",
-                        e.target.value
-                      )
-                    }
-                  />
-                </div>
-              ))}
-              <button type="button" onClick={() => handleAddInput(formIndex)}>
-                Add Input
-              </button>
-            </div>
-          ))}
+        {forms.map((form, formIndex) => (
+          <div key={formIndex} className="mb-3">
+            <label htmlFor={`formName-${formIndex}`} className="form-label">
+              Form Name
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              id={`formName-${formIndex}`}
+              placeholder="Form Name"
+              value={form.name}
+              onChange={(e) => handleFormChange(formIndex, e.target.value)}
+            />
 
-          {/* Button to add a new form */}
-          <button type="button" onClick={handleAddForm}>
-            Add Form
+            {form.inputs.map((input, inputIndex) => (
+              <div key={inputIndex} className="mb-2">
+                <input
+                  className="form-control mb-1 mt-1"
+                  type="text"
+                  placeholder="Key"
+                  value={input.key}
+                  onChange={(e) =>
+                    handleInputChange(
+                      formIndex,
+                      inputIndex,
+                      "key",
+                      e.target.value
+                    )
+                  }
+                />
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Value"
+                  value={input.value}
+                  onChange={(e) =>
+                    handleInputChange(
+                      formIndex,
+                      inputIndex,
+                      "value",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            ))}
+            <button
+              className="btn btn-secondary mb-2"
+              type="button"
+              onClick={() => handleAddInput(formIndex)}
+            >
+              Add Input
+            </button>
+          </div>
+        ))}
+
+        <button
+          className="btn btn-secondary mb-3"
+          type="button"
+          onClick={handleAddForm}
+        >
+          Add Form
+        </button>
+
+        <div>
+          <button className="btn btn-primary mb-3" type="submit">
+            Post
           </button>
         </div>
-        <button className="btn btn-danger" type="submit">
-          Post
-        </button>
       </form>
     </div>
   );

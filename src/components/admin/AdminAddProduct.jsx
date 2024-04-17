@@ -29,7 +29,7 @@ const AdminAddProduct = () => {
   return (
     <div>
       <ImageUpload onUpload={getImages} />
-      <ImageList images={images} onDelete={onDelete} onEdit={onEdit} />
+      {/*<ImageList images={images} onDelete={onDelete} onEdit={onEdit} />*/}
     </div>
   );
 };
