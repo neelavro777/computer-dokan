@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Listing from "../components/Listing";
 import { useAuthContext } from "../context/AuthContext"; // adjust the path according to your project structure
 import Navbar from "../components/Navbar";
-import Carousel from '../components/Carousel'
+import Carousel from "../components/Carousel";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -13,7 +13,9 @@ const HomePage = () => {
   return (
     <div style={{ backgroundColor: "rgb(242, 242, 242)" }}>
       <Navbar />
-      <Carousel />
+      <div className="container mx-auto d-flex justify-content-center">
+        <Carousel />
+      </div>
       <div className="container">
         <div className="d-flex justify-content-between align-items-center"></div>
 
