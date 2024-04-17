@@ -6,12 +6,15 @@ import { useParams } from 'react-router-dom';
 import { useCompatibility } from '../context/CompatibilityContext';
 import '../globals.css'
 
+
 const CategoryPage = () => {
     const { category } = useParams();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { addProduct, checkCompatibility } = useCompatibility();
+    const [search, setSearch] = useState('');
+    const [sortType, setSortType] = useState('');
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -27,6 +30,20 @@ const CategoryPage = () => {
         fetchProducts();
     }, [category]);
 
+    useEffect(() => {
+        const sortedProducts = [...products].sort((a, b) => {
+            if (sortType === 'priceLowToHigh') {
+                return a.price - b.price;
+            } else if (sortType === 'priceHighToLow') {
+                return b.price - a.price;
+            } else {
+                return 0;
+            }
+        });
+        setProducts(sortedProducts);
+    }, [sortType]);
+
+
     const handleOnAdd = (product) => {
         const isCompatible = checkCompatibility(product);
         if (!isCompatible) {
@@ -36,18 +53,48 @@ const CategoryPage = () => {
         navigate('/pc-builder', { state: { product: product } });
     };
 
+    const handleOnSelect = (e) => {
+        setSortType(e.target.value);
+        console.log(sortType)
+    };
+
     return (
         <div style={{ backgroundColor: "rgb(242, 242, 242)" }}>
             <Navbar />
             <div className="container mt-4">
-                <h1 className="mb-4">Category Page</h1>
+                <div className="mb-4" style={{ backgroundColor: "rgb(242,242,242)" }}>
+                    <div className="d-flex align-items-center justify-content-between">
+                        <h1 className="mb-0">Category Page</h1>
+                        <div className="d-flex align-items-center">
+                            <form className="me-3">
+                                <input
+                                    type="text"
+                                    placeholder="Search products..."
+                                    className="form-control"
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                            </form>
+                            <form>
+                                <select className="form-select border-0" onChange={handleOnSelect}>
+                                    <option value="">Sort by</option>
+                                    <option value="priceLowToHigh">Price: Low to High</option>
+                                    <option value="priceHighToLow">Price: High to Low</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div className="row">
                     {loading ? (
                         <p>Loading...</p>
                     ) : products.length === 0 ? (
                         <p>No products found for this category.</p>
                     ) : (
-                        products.map(product => (
+
+                        products.filter(product => product.product.toLowerCase().includes(search.toLowerCase()))
+                        .map(product => (
                         <div key={product.id} className="col-md-4 mb-4">
                             <div className="card h-100 "
                             style={{

@@ -8,6 +8,9 @@ const ImageUpload = ({ onUpload }) => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [forms, setForms] = useState([]);
+  const [keyValuePairs, setKeyValuePairs] = useState([{ key: "", value: "" }]);
+  const [stock, setStock] = useState("");
+
 
   useEffect(() => {
     getItem();
@@ -20,6 +23,7 @@ const ImageUpload = ({ onUpload }) => {
     formData.append("category", category);
     formData.append("price", price);
     formData.append("uploadedBy", authUser.userMId);
+    formData.append("stock", stock);
     // Convert forms array to specifications object
     const specificationsArray = forms.map((form) => {
       return {
@@ -27,6 +31,13 @@ const ImageUpload = ({ onUpload }) => {
       };
     });
     formData.append("specifications", JSON.stringify(specificationsArray));
+
+    const keySpecifications = keyValuePairs.reduce((obj, pair) => {
+      return { ...obj, [pair.key]: pair.value };
+    }, {});
+  
+    formData.append("keySpecifications", JSON.stringify(keySpecifications));
+  
 
     try {
       const res = await axios.post(
@@ -76,6 +87,16 @@ const ImageUpload = ({ onUpload }) => {
     setImage(e.target.files[0]);
   };
 
+  const handlePairChange = (index, keyOrValue, value) => {
+    const updatedPairs = [...keyValuePairs];
+    updatedPairs[index][keyOrValue] = value;
+    setKeyValuePairs(updatedPairs);
+  };
+
+  const handleAddPair = () => {
+    setKeyValuePairs([...keyValuePairs, { key: "", value: "" }]);
+  };
+  
   const getItem = async () => {
     try {
       const result = await axios.get(
@@ -144,6 +165,19 @@ const ImageUpload = ({ onUpload }) => {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="productName" className="form-label">
+            Stock
+          </label>
+          <input
+            className="form-control"
+            type="text"
+            id="productName"
+            placeholder="Stock"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+          />
+        </div>
 
         {forms.map((form, formIndex) => (
           <div key={formIndex} className="mb-3">
@@ -208,6 +242,39 @@ const ImageUpload = ({ onUpload }) => {
         >
           Add Form
         </button>
+        {keyValuePairs.map((pair, index) => (
+  <div key={index} className="mb-3">
+    <label htmlFor={`key-${index}`} className="form-label">
+      Key Specification label
+    </label>
+    <input
+      className="form-control"
+      type="text"
+      id={`key-${index}`}
+      placeholder="Key"
+      value={pair.key}
+      onChange={(e) => handlePairChange(index, 'key', e.target.value)}
+    />
+    <label htmlFor={`value-${index}`} className="form-label">
+      Key Specification Value
+    </label>
+    <input
+      className="form-control"
+      type="text"
+      id={`value-${index}`}
+      placeholder="Value"
+      value={pair.value}
+      onChange={(e) => handlePairChange(index, 'value', e.target.value)}
+    />
+  </div>
+))}
+<button
+  className="btn btn-secondary mb-3"
+  type="button"
+  onClick={handleAddPair}
+>
+  Add Key Specification
+</button>
 
         <div>
           <button className="btn btn-primary mb-3" type="submit">
