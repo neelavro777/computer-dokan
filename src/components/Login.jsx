@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verificationMessage, setVerificationMessage] = useState("");
-  const {setAuthUser} = useAuthContext();
+  const { setAuthUser } = useAuthContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,30 +21,32 @@ const Login = () => {
           password,
         }
       );
-      
 
       //local storage
       localStorage.setItem("userinfo", JSON.stringify(response.data));
       setAuthUser(response.data);
+      console.log(response.data);
 
-      const { accessToken  } = response.data;
+      const { accessToken } = response.data;
       const { userType } = response.data;
       const { userName } = response.data;
       const { userId } = response.data;
+      const { phoneNumber } = response.data;
 
       localStorage.setItem("userName", userName);
       localStorage.setItem("userType", userType);
       localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("userId", userId,);
-      
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("phoneNumber", phoneNumber);
+
       navigate("/");
       console.log(response.data);
     } catch (error) {
       console.error("Login failed:", error);
-      if (error.response.data.message === "User not verified"){
+      if (error.response.data.message === "User not verified") {
         setVerificationMessage(
           "Email not verified. Please check your email for the verification link."
-          );
+        );
       }
     }
   };
@@ -98,7 +100,7 @@ const Login = () => {
               />
             </div>
             <p className="forgot-password text-right d-flex justify-content-end">
-            <a href="/forgotpassword">Forget Password</a>
+              <a href="/forgotpassword">Forget Password</a>
             </p>
             {verificationMessage && (
               <div className="alert alert-danger" role="alert">

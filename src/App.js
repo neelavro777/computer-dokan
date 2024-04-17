@@ -18,6 +18,8 @@ import PCbuilderPage from "./pages/PCbuilderPage";
 import CategoryPage from "./pages/CategoryPage";
 import PaymentFailurePage from "./pages/PaymentFailurePage";
 import "./index.css";
+import ProfilePage from "./pages/ProfilePage";
+import SearchPage from "./pages/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
     element: <VerifyUser />,
   },
   {
+    path: "/search",
+    element: <SearchPage />,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+  },
+  {
     path: "/admin",
     element: <AdminPage />,
   },
@@ -61,30 +71,29 @@ const router = createBrowserRouter([
     element: <ChatPage />,
   },
   {
-      path: "/cart",
-      element: <CartPage />,
+    path: "/cart",
+    element: <CartPage />,
   },
   {
-      path: "/payment/success/:transactionId",
-      element: <PaymentSuccessPage />,
+    path: "/payment/success/:transactionId",
+    element: <PaymentSuccessPage />,
   },
   {
-      path: "/payment/fail/:transactionId",
-      element: <PaymentFailurePage />,
+    path: "/payment/fail/:transactionId",
+    element: <PaymentFailurePage />,
   },
   {
-      path: "/compare",
-      element: <CompareProductPage />,
+    path: "/compare",
+    element: <CompareProductPage />,
   },
   {
-      path: "/pc-builder",
-      element: <PCbuilderPage />,
+    path: "/pc-builder",
+    element: <PCbuilderPage />,
   },
   {
-      path: "/category/:category",
-      element: <CategoryPage />,
+    path: "/category/:category",
+    element: <CategoryPage />,
   },
-  
 ]);
 
 function App() {
