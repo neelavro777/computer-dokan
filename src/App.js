@@ -95,14 +95,10 @@ const router = createBrowserRouter([
     path: "/category/:category",
     element: <CategoryPage />,
   },
-<<<<<<< Updated upstream
-=======
   {
-      path: "/customer",
-      element: <CustomerPage />,
+    path: "/customer",
+    element: <CustomerPage />,
   },
-  
->>>>>>> Stashed changes
 ]);
 
 function App() {
