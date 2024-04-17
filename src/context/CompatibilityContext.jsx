@@ -57,7 +57,7 @@ export const CompatibilityProvider = ({ children }) => {
   const calculateTotalPowerUsage = () => {
     let totalPower = 0;
     selectedProducts.forEach((product) => {
-      const powerUsage = parseInt(product.keySpecifications["Recommended PSU"]) || 0; // Default to 0 if field doesn't exist or is not a number
+      const powerUsage = parseInt(product.keySpecifications["Recommended PSU"]) || 0; 
       totalPower += powerUsage;
     });
     return totalPower;
@@ -72,79 +72,6 @@ export const CompatibilityProvider = ({ children }) => {
     return totalPrice;
   };
 
-  // Function to check compatibility
-// Function to check compatibility
-// const checkCompatibility = () => {
-//     // Iterate over selected products and check compatibility
-//     for (let i = 0; i < selectedProducts.length; i++) {
-//       const productA = selectedProducts[i];
-//       for (let j = 0; j < selectedProducts.length; j++) {
-//         const productB = selectedProducts[j];
-        
-//         // Check compatibility between productA and productB
-//         // Memory type check
-//         if (
-//           productA.category === "Motherboard" &&
-//           productB.category === "RAM" &&
-//           productA.keySpecifications["Memory Type"] !== productB.keySpecifications["Memory Type"]
-//         ) {
-//         alert("Incompatible memory types: " + productA.category + " and " + productB.category);
-//           return false; // Incompatible memory types
-//         }
-
-//         // CPU socket check
-//         // if (
-//         //   productA.category === "Processor" &&
-//         //   productB.category === "Motherboard" &&
-//         //   productA.keySpecifications["CPU Socket"] !== productB.keySpecifications["CPU Socket"]
-//         // ) {
-//         //   return false; // Incompatible CPU sockets
-//         // }
-
-//         // // PSU connector check
-//         // if (
-//         //   productA.category === "Power Supply" &&
-//         //   productB.category === "Graphics Card" &&
-//         //   parseInt(productA.keySpecifications["6Pin/8Pin Connectors"]) < parseInt(productB.keykeySpecifications["Connectors"])
-//         // ) {
-//         //   return false; // Insufficient PSU connectors
-//         // }
-
-//         // // MB size check
-//         // if (
-//         //   productA.category === "Motherboard" &&
-//         //   productB.category === "Case" &&
-//         //   productA.keySpecifications["Form Factor"] !== productB.keySpecifications["Supported MB Size"]
-//         // ) {
-//         //   return false; // Incompatible motherboard size
-//         // }
-
-//         // Add more compatibility checks as needed
-//       }
-//     }
-//     // If no compatibility issues found, return true
-//     return true;
-//   };
-
-// correct version of checkCompatibility function
-  // const checkCompatibility = (addedProduct) => {
-  //   for (let i = 0; i < selectedProducts.length; i++) {
-  //     const productA = selectedProducts[i];
-  //     const productB = addedProduct;
-        
-  //     if ((productA.category === "Motherboard" && productB.category === "RAM") || (productA.category === "RAM" && productB.category === "Motherboard")) {
-  //       if (productA.keySpecifications["Memory Type"] !== productB.keySpecifications["Memory Type"]) {
-  //         toast.error("Incompatible memory types: " + productA.category + " and " + productB.category);
-  //         return false; // Incompatible memory types
-  //       } else if (parseInt(productA.keySpecifications["Frequency"]) < parseInt(productB.keySpecifications["Frequency"])) {
-  //         toast.error("Incompatible memory speed: " + productA.category + " and " + productB.category);
-  //         return false; // Incompatible memory speed
-  //       }
-  //     } 
-  //   }
-
-  //   return true;
-  // };
 
   const checkCompatibility = (addedProduct) => {
     for (let i = 0; i < selectedProducts.length; i++) {

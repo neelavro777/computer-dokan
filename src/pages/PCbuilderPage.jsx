@@ -114,7 +114,7 @@ const handleOnClick = () => {
                         <div className="image-container" style={{ height: "100px", overflow: "hidden" }}>
                             {product ? (
                                 <Link to={`/product/${product.id}`}>
-                                    <img src={`http://localhost:5000/uploads/${product.image}`} className="img-fluid rounded-start" alt="..." style={{ width: "100%", maxHeight: "100%", objectFit: "cover" }} />
+                                    <img src={`http://localhost:5000/uploads/${product.image}`} className="img-fluid rounded-start" alt="..." style={{ width: "150px", maxHeight: "100%", objectFit: "cover",padding:'5px' }} />
                                 </Link>
                             ) : (
                                 <img src={pros} className="img-fluid rounded-start" alt="..." style={{ width: "100%", maxHeight: "100%", objectFit: "cover" }} />
