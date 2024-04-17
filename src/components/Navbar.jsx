@@ -56,7 +56,7 @@ function Navbar() {
 
   return (
     <header className="p-3 text-bg-dark sticky">
-      <div className="container ">
+      <div className="container pe-0">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <Link
             to="/"
@@ -180,7 +180,7 @@ function Navbar() {
               )}
             </div>
             {authUser ? (
-              <button type="button" className="btn text-white me-2">
+              <button type="button" className="btn text-white ">
                 <Link to="/profile" style={{ textDecoration: "none" }}>
                   <FaUserCircle size={36} color="white" />
                 </Link>

@@ -19,7 +19,7 @@ const ProductPageDashboard = ({ productID, product }) => {
   const sellerID = product.uploadedBy?._id;
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useContext(CartContext);
-  const protag = `https://12d8-103-184-94-140.ngrok-free.app/product/${productID}`;
+  const protag = `https://9ffd-114-129-9-139.ngrok-free.app/product/${productID}`;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -89,11 +89,7 @@ const ProductPageDashboard = ({ productID, product }) => {
               <div className="d-flex justify-content-between align-items-center">
                 <h5 className="card-title flex-grow-1">{product.product}</h5>
               </div>
-              <p className="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+              <p className="card-text py-2">{product.category}</p>
               <p className="card-text">
                 <small className="text-body-secondary">
                   <StarRatings
@@ -120,7 +116,10 @@ const ProductPageDashboard = ({ productID, product }) => {
                   +
                 </button>
               </div>
-              <FaceBookShare url={protag} quote={product.product} />
+              <div className="d-flex  gap-3 py-4 align-items-baseline">
+                <p>Share:</p>
+                <FaceBookShare url={protag} quote={product.product} />
+              </div>
               {product.uploadedBy?.userType === "seller" &&
               authUser?.userType === "customer" ? (
                 <div className="text-end">

@@ -37,6 +37,14 @@ const AdminPage = () => {
               </li>
               <li
                 className={`btn nav-item nav-pills ${
+                  currentTab === "addUser" ? "btn-dark" : ""
+                }`}
+                onClick={() => setCurrentTab("addUser")}
+              >
+                Add User
+              </li>
+              <li
+                className={`btn nav-item nav-pills ${
                   currentTab === "product" ? "btn-dark" : ""
                 }`}
                 onClick={() => setCurrentTab("product")}
@@ -51,19 +59,11 @@ const AdminPage = () => {
               >
                 Add Product
               </li>
-              <li
-                className={`btn nav-item nav-pills ${
-                  currentTab === "addUser" ? "btn-dark" : ""
-                }`}
-                onClick={() => setCurrentTab("addUser")}
-              >
-                Add User
-              </li>
             </ul>
           </div>
 
           {/* Main Content */}
-          <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4 vh-100">
             {currentTab == "dashboard" ? <Dashboard /> : null}
             {currentTab == "user" ? <User /> : null}
             {currentTab == "product" ? <Product /> : null}
