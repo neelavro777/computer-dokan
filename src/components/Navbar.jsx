@@ -15,6 +15,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const { authUser, setAuthUser } = useAuthContext();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleLoginClick = () => {
     navigate("/login");
@@ -26,6 +27,9 @@ function Navbar() {
 
   const handleSellerClick = () => {
     navigate("/seller");
+  };
+  const handleCustomerClick = () => {
+    navigate("/customer");
   };
 
   const handleLogout = () => {
@@ -47,12 +51,12 @@ function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    navigate("/search");
+    navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
   };
 
   return (
     <header className="p-3 text-bg-dark sticky">
-      <div className="container ">
+      <div className="container pe-0">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <Link
             to="/"
@@ -118,6 +122,8 @@ function Navbar() {
               className="form-control form-control-dark text-bg-dark"
               placeholder="Search..."
               aria-label="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </form>
 
@@ -135,6 +141,15 @@ function Navbar() {
                       onClick={handleAdminClick}
                     >
                       Admin Panel
+                    </button>
+                  )}
+                  {authUser.userType === "customer" && (
+                    <button
+                      type="button"
+                      className="btn btn-primary mr-2 ms-3"
+                      onClick={handleCustomerClick}
+                    >
+                      DiscussionForum
                     </button>
                   )}
                   {authUser.userType === "seller" && (
@@ -165,9 +180,9 @@ function Navbar() {
               )}
             </div>
             {authUser ? (
-              <button type="button" className="btn text-white me-2">
+              <button type="button" className="btn text-white ">
                 <Link to="/profile" style={{ textDecoration: "none" }}>
-                  <FaUserCircle size={32} color="white" />
+                  <FaUserCircle size={36} color="white" />
                 </Link>
               </button>
             ) : null}

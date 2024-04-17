@@ -8,20 +8,15 @@ import Carousel from '../components/Carousel'
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { authUser } = useAuthContext();
+  const { authUser, setAuthUser } = useAuthContext();
+
   return (
-    <div>
+    <div style={{ backgroundColor: "rgb(242, 242, 242)" }}>
       <Navbar />
       <Carousel />
       <div className="container">
-        <div className="d-flex justify-content-between align-items-center">
-          <h1>HomePage</h1>
-        </div>
-        {authUser ? (
-          <h2>Welcome, {authUser.userName}</h2>
-        ) : (
-          <h2>You are not logged in</h2>
-        )}
+        <div className="d-flex justify-content-between align-items-center"></div>
+
         <Listing />
       </div>
     </div>

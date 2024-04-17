@@ -30,7 +30,11 @@ const AcceptedMessage = ({ chat }) => {
 
   const handleAddToCart = () => {
     console.log("Add to cart clicked");
-    addToCart({ ...chat.offer.product, quantity: 1 });
+    let product = { ...chat.offer.product };
+    console.log(product);
+    product.price = chat.offer.offerAmount;
+    console.log(product);
+    addToCart({ ...product, quantity: 1 });
     setIsAddedToCart(chat.offer.product._id);
     Navigate("/cart");
   };
