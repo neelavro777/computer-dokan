@@ -5,8 +5,8 @@ import { useProductContext } from "../../context/ProductContext";
 import { useSocketContext } from "../../context/SocketContext";
 
 const PendingOffers = () => {
-  // const [offers, setOffers] = useState([]);
   const { selectedUser } = useChatContext();
+  const [newOfferReceived, setNewOfferReceived] = useState(false);
   const {
     selectedProduct,
     setSelectedProduct,
@@ -20,19 +20,12 @@ const PendingOffers = () => {
 
   const { socket } = useSocketContext();
 
-  // useEffect(() => {
-  //   if (socket){
-  //     socket.on("newOffer", (newOffer) => {
-  //     setOffers([...offers, newOffer]);
-  //   });
-  //   return () => socket.off("newOffer");}
-
-  // }, [socket, setOffers, offers]);
 
   useEffect(() => {
     if (socket) {
       socket.on("newOffer", (newOffer) => {
         setOffers((prevOffers) => [...prevOffers, newOffer]);
+        setNewOfferReceived(true);
       });
 
       return () => socket.off("newOffer");
@@ -40,37 +33,9 @@ const PendingOffers = () => {
   }, [socket, setOffers]);
 
   const handleClick = (offer, index) => {
-    // setSelectedProduct(offer.product);
-    // setSelectedOffer(offer);
     console.log(offer);
   };
 
-  // useEffect(() => {
-  //   const fetchOffers = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:5000/api/offer/get-offers/${selectedUser._id}`, {
-  //           headers: {
-  //               Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //           },
-  //       });
-  //       const data = await response.data;
-  //       // setOffers();
-  //       if (Array.isArray(data) && data.length > 0) {
-  //         console.log(data)
-  //         setOffers(data);
-  //       } else {
-  //         setOffers([]);
-  //       }
-  //       // setOffers(data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   if (selectedUser?._id) {
-  //     fetchOffers();
-  //   }
-  // }, [selectedUser, setOffers]);
 
   const fetchOffers = async () => {
     try {
@@ -95,13 +60,14 @@ const PendingOffers = () => {
       console.error(error);
     }
     setOfferStatus(false);
+    setNewOfferReceived(false);
   };
 
   useEffect(() => {
     if (selectedUser?._id) {
       fetchOffers();
     }
-  }, [selectedUser, setOffers, offerStatus]);
+  }, [selectedUser, setOffers, offerStatus, newOfferReceived]);
 
   console.log(offers);
 

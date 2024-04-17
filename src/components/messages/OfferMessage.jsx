@@ -28,23 +28,6 @@ const OfferMessage = ({ chat }) => {
   const senderName = fromMe ? authUser.userName : selectedUser.fullName;
   const textClass = fromMe ? "text-end" : "text-start";
 
-  // const handleAccept = async () => {
-  //   if (authUser.userType === 'seller') {
-  //     await acceptOffer();
-  //     console.log("Accepted Offer Details: ",data);
-
-  //   } else {
-  //     await declineOffer();
-  //     console.log("Declined offer details: ",declineDetails);
-  //     // console.log(data);
-  //     // handle accept offer logic here
-  //   }
-
-  // };
-
-  // const handleDecline = () => {
-  //   // handle decline offer logic here
-  // };
 
   const handleAccept = async () => {
     await acceptOffer();
