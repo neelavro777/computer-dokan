@@ -4,6 +4,7 @@ import image2 from '../carouselImages/1009363.jpg';
 import image3 from '../carouselImages/images.jpeg';
 
 const Carousel = () => {
+    console.log("Carousel");
   return (
     <div>
       <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
