@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Product = () => {
+  const { authUser } = useAuthContext();
   const [products, setProducts] = useState([]);
+  const [editingId, setEditingId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch products from the server
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await Axios.get(
-          "http://localhost:5000/api/product/get-item"
+        const response = await axios.get(
+          `http://localhost:5000/api/product/get-item`
         );
         setProducts(response.data);
       } catch (error) {
@@ -20,12 +22,66 @@ const Product = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [authUser.userMId]);
+
+  const handleEdit = (product) => {
+    setEditingId(product._id);
+    // Set temporary editable state to the values of the current product
+    setEditable({
+      name: product.product,
+      price: product.price,
+      stock: product.stock,
+    });
+  };
+
+  const [editable, setEditable] = useState({
+    name: "",
+    price: "",
+    stock: "",
+  });
+
+  const handleChange = (e, field) => {
+    setEditable({
+      ...editable,
+      [field]: e.target.value,
+    });
+  };
+
+  const handleUpdate = async (id) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/product/update-product/${id}`,
+        {
+          name: editable.name,
+          price: editable.price,
+          stock: editable.stock,
+        }
+      );
+      alert("Product updated successfully");
+      // Reflect changes in the local state to avoid refetching
+      setProducts(
+        products.map((prod) =>
+          prod._id === id
+            ? {
+                ...prod,
+                product: editable.name,
+                price: editable.price,
+                stock: editable.stock,
+              }
+            : prod
+        )
+      );
+      setEditingId(null); // Exit editing mode
+    } catch (error) {
+      console.error("Error updating product", error);
+      alert("Failed to update product");
+    }
+  };
 
   // Delete product by id
   const deleteProduct = async (id) => {
     try {
-      const response = await Axios.delete(
+      const response = await axios.delete(
         `http://localhost:5000/api/product/delete-item/${id}`,
         {
           headers: {
@@ -35,7 +91,6 @@ const Product = () => {
       );
       if (response.data.status === "ok") {
         alert("Product deleted successfully");
-        // Refresh the list after deletion
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== id)
         );
@@ -74,21 +129,68 @@ const Product = () => {
             .map((product) => (
               <tr key={product._id}>
                 <td>{product.id}</td>
-                <td>{product.product}</td>
+                <td>
+                  {editingId === product._id ? (
+                    <input
+                      type="text"
+                      value={editable.name}
+                      onChange={(e) => handleChange(e, "name")}
+                    />
+                  ) : (
+                    product.product
+                  )}
+                </td>
                 <td>{product.category}</td>
-                <td>${product.price}</td>
-                <td>{product.stock}</td>
+                <td>
+                  {editingId === product._id ? (
+                    <input
+                      type="text"
+                      value={editable.price}
+                      onChange={(e) => handleChange(e, "price")}
+                    />
+                  ) : (
+                    `$${product.price}`
+                  )}
+                </td>
+                <td>
+                  {editingId === product._id ? (
+                    <input
+                      type="number"
+                      value={editable.stock}
+                      onChange={(e) => handleChange(e, "stock")}
+                    />
+                  ) : (
+                    product.stock
+                  )}
+                </td>
                 <td>
                   <div className="d-flex gap-2">
-                    <Link to={`/product/${product.id}`}>
-                      <button className="btn btn-primary">View</button>
-                    </Link>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => deleteProduct(product.id)}
-                    >
-                      Delete
-                    </button>
+                    {editingId === product._id ? (
+                      <button
+                        className="btn btn-success"
+                        onClick={() => handleUpdate(product._id)}
+                      >
+                        Update
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => handleEdit(product)}
+                        >
+                          Edit
+                        </button>
+                        <Link to={`/product/${product.id}`}>
+                          <button className="btn btn-primary">View</button>
+                        </Link>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => deleteProduct(product.id)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </div>
                 </td>
               </tr>

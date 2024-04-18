@@ -5,7 +5,7 @@ import SellerAddProduct from "../components/seller/SellerAddProduct";
 import Product from "../components/seller/Product";
 
 const SellerPage = () => {
-  const [currentTab, setCurrentTab] = useState("dashboard");
+  const [currentTab, setCurrentTab] = useState("product");
   return (
     <div>
       <Navbar />

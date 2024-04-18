@@ -58,12 +58,11 @@ const ProductPage = () => {
   return (
     <div className="">
       <Navbar />
-      <h1>ProductPage</h1>
 
       <div className="py-5">
         <ProductPageDashboard productID={id} product={product} />
       </div>
-      <div className="container mx-auto w-75">
+      <div className="container mx-auto w-75 pb-5">
         <div
           className="btn-group text-white py-3"
           role="group"

@@ -11,7 +11,6 @@ const ImageUpload = ({ onUpload }) => {
   const [keyValuePairs, setKeyValuePairs] = useState([{ key: "", value: "" }]);
   const [stock, setStock] = useState("");
 
-
   useEffect(() => {
     getItem();
   }, []);
@@ -35,9 +34,8 @@ const ImageUpload = ({ onUpload }) => {
     const keySpecifications = keyValuePairs.reduce((obj, pair) => {
       return { ...obj, [pair.key]: pair.value };
     }, {});
-  
+
     formData.append("keySpecifications", JSON.stringify(keySpecifications));
-  
 
     try {
       const res = await axios.post(
@@ -96,7 +94,7 @@ const ImageUpload = ({ onUpload }) => {
   const handleAddPair = () => {
     setKeyValuePairs([...keyValuePairs, { key: "", value: "" }]);
   };
-  
+
   const getItem = async () => {
     try {
       const result = await axios.get(
@@ -111,7 +109,7 @@ const ImageUpload = ({ onUpload }) => {
 
   return (
     <div className="container mt-3 px-5">
-      <p className="fs-3 fw-semibold">Add Product</p>
+      <p className="fs-3 fw-semibold pt-3">Add Product</p>
       <hr />
       <form onSubmit={onUploadItem} className="">
         <div className="mb-3">
@@ -243,38 +241,38 @@ const ImageUpload = ({ onUpload }) => {
           Add Form
         </button>
         {keyValuePairs.map((pair, index) => (
-  <div key={index} className="mb-3">
-    <label htmlFor={`key-${index}`} className="form-label">
-      Key Specification label
-    </label>
-    <input
-      className="form-control"
-      type="text"
-      id={`key-${index}`}
-      placeholder="Key"
-      value={pair.key}
-      onChange={(e) => handlePairChange(index, 'key', e.target.value)}
-    />
-    <label htmlFor={`value-${index}`} className="form-label">
-      Key Specification Value
-    </label>
-    <input
-      className="form-control"
-      type="text"
-      id={`value-${index}`}
-      placeholder="Value"
-      value={pair.value}
-      onChange={(e) => handlePairChange(index, 'value', e.target.value)}
-    />
-  </div>
-))}
-<button
-  className="btn btn-secondary mb-3"
-  type="button"
-  onClick={handleAddPair}
->
-  Add Key Specification
-</button>
+          <div key={index} className="mb-3">
+            <label htmlFor={`key-${index}`} className="form-label">
+              Key Specification label
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              id={`key-${index}`}
+              placeholder="Key"
+              value={pair.key}
+              onChange={(e) => handlePairChange(index, "key", e.target.value)}
+            />
+            <label htmlFor={`value-${index}`} className="form-label">
+              Key Specification Value
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              id={`value-${index}`}
+              placeholder="Value"
+              value={pair.value}
+              onChange={(e) => handlePairChange(index, "value", e.target.value)}
+            />
+          </div>
+        ))}
+        <button
+          className="btn btn-secondary mb-3"
+          type="button"
+          onClick={handleAddPair}
+        >
+          Add Key Specification
+        </button>
 
         <div>
           <button className="btn btn-primary mb-3" type="submit">

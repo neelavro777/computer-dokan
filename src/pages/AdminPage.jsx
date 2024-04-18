@@ -9,7 +9,7 @@ import AdminAddProduct from "../components/admin/AdminAddProduct";
 import AdminAddUser from "../components/admin/AdminAddUser";
 
 const AdminPage = () => {
-  const [currentTab, setCurrentTab] = useState("dashboard");
+  const [currentTab, setCurrentTab] = useState("user");
 
   return (
     <>
@@ -19,14 +19,14 @@ const AdminPage = () => {
           {/* Sidebar */}
           <div className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse border-end">
             <ul className="nav flex-column gap-3 mt-4">
-              <li
+              {/*<li
                 className={`btn nav-item nav-pills ${
                   currentTab === "dashboard" ? "btn-dark" : ""
                 }`}
                 onClick={() => setCurrentTab("dashboard")}
               >
                 Dashboard
-              </li>
+              </li>*/}
               <li
                 className={`btn nav-item nav-pills ${
                   currentTab === "user" ? "btn-dark" : ""

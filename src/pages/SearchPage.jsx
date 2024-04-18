@@ -3,21 +3,13 @@ import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-toastify";
-import { set } from "mongoose";
 import Navbar from "../components/Navbar";
 
 const SearchPage = () => {
   const [loading, setLoading] = useState(true);
-  //Cart
   const { addToCart } = useCart();
-  const quantity = 1;
-  const handleAddToCart = (event, product) => {
-    event.preventDefault();
-    toast.success("Added to cart");
-    addToCart({ ...product, quantity });
-  };
-
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState("");
   const { search } = useLocation();
   const query = new URLSearchParams(search).get("q");
 
@@ -25,7 +17,7 @@ const SearchPage = () => {
     if (query) {
       fetchProducts(query);
     }
-  }, [query]);
+  }, [query, filter]);
 
   const fetchProducts = async (query) => {
     try {
@@ -39,33 +31,60 @@ const SearchPage = () => {
     }
   };
 
+  const handleAddToCart = (event, product) => {
+    event.preventDefault();
+    toast.success("Added to cart");
+    addToCart({ ...product, quantity: 1 });
+  };
+
+  const applyFilter = (products) => {
+    switch (filter) {
+      case "name-asc":
+        return [...products].sort((a, b) => a.product.localeCompare(b.product));
+      case "name-desc":
+        return [...products].sort((a, b) => b.product.localeCompare(a.product));
+      case "price-asc":
+        return [...products].sort(
+          (a, b) => parseFloat(a.price) - parseFloat(b.price)
+        );
+      case "price-desc":
+        return [...products].sort(
+          (a, b) => parseFloat(b.price) - parseFloat(a.price)
+        );
+      default:
+        return products;
+    }
+  };
+
   return (
     <>
       <Navbar />
-      {/*<div className="container mt-3">
-        <h1>Search Results</h1>
-        <ul className="list-group">
-          {products.map((product, index) => (
-            <li key={index} className="list-group-item">
-              <strong>{product.product}</strong> - {product.category} - $
-              {product.price} - Stock: {product.stock}
-            </li>
-          ))}
-        </ul>
-        </div>*/}
-
       <div className="container mt-4">
-        {/*<h1 className="mb-4">Category Page</h1>*/}
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="mb-0">Products</h1>
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="form-select w-auto"
+          >
+            <option value="">Select Filter</option>
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="price-asc">Price (Low-High)</option>
+            <option value="price-desc">Price (High-Low)</option>
+          </select>
+        </div>
+
         <div className="row">
           {loading ? (
             <p>Loading...</p>
           ) : products.length === 0 ? (
             <p>No products found for this category.</p>
           ) : (
-            products.map((product) => (
+            applyFilter(products).map((product) => (
               <div key={product.id} className="col-md-4 col-lg-3 mb-4">
                 <div
-                  className="card h-100 "
+                  className="card h-100"
                   style={{
                     transition: "box-shadow 0.3s ease",
                     display: "flex",
