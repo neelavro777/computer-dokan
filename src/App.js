@@ -99,6 +99,10 @@ const router = createBrowserRouter([
     path: "/customer",
     element: <CustomerPage />,
   },
+<<<<<<< Updated upstream
+=======
+  
+>>>>>>> Stashed changes
 ]);
 
 function App() {
